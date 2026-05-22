@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discourse Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=2.9">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+    <!-- High-fidelity background effects -->
+    <div class="aurora-bg">
+        <div class="aurora-sphere aurora-1"></div>
+        <div class="aurora-sphere aurora-2"></div>
+        <div class="aurora-sphere aurora-3"></div>
+    </div>
+    <div class="grain-overlay"></div>
+
+    <div class="app-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                        <path d="M2 12h20" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="brand-title">Discourse</h1>
+                    <span class="brand-sub">analyzer</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="explorer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <path d="M3 9h18" />
+                        <path d="M9 21V9" />
+                    </svg>
+                    <span>Post Explorer</span>
+                </button>
+                <button class="nav-item" data-tab="trends">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                    </svg>
+                    <span>Trends</span>
+                </button>
+                <button class="nav-item" data-tab="narratives">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3" />
+                        <circle cx="19" cy="5" r="2" />
+                        <circle cx="5" cy="5" r="2" />
+                        <circle cx="19" cy="19" r="2" />
+                        <circle cx="5" cy="19" r="2" />
+                        <line x1="12" y1="9" x2="12" y2="5" />
+                        <line x1="14.5" y1="13.5" x2="17.5" y2="17.5" />
+                        <line x1="9.5" y1="13.5" x2="6.5" y2="17.5" />
+                    </svg>
+                    <span>Narratives</span>
+                </button>
+                <button class="nav-item" data-tab="origin-tracer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
+                    </svg>
+                    <span>Origin Tracer</span>
+                </button>
+<button class="nav-item" data-tab="qa">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.3-4.3"/>
+                        <path d="M11 8v6M8 11h6"/>
+                    </svg>
+                    <span>Ask the Data</span>
+                </button>
+                <button class="nav-item" data-tab="export">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    <span>Export Data</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-stats" id="stats-bar">
+                <div class="stats-loading">Collecting data...</div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="live-indicator">
+                    <span class="pulse-dot"></span>
+                    <span>Live Collection</span>
+                </div>
+                <p class="sidebar-credit">Academic Research Prototype</p>
+                <p class="sidebar-credit">4chan &middot; Mastodon &middot; Truth Social</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Post Explorer -->
+            <section id="explorer" class="tab-content active">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Post Explorer</h2>
+                        <p class="page-desc">Search and browse collected discourse across platforms</p>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-group filter-search">
+                        <svg class="filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg>
+                        <input type="text" id="search-keyword" placeholder="Search keywords..." />
+                    </div>
+                    <select id="search-platform">
+                        <option value="">All Platforms</option>
+                        <option value="4chan">4chan</option>
+                        <option value="mastodon">Mastodon</option>
+                        <option value="truthsocial">Truth Social</option>
+                    </select>
+                    <input type="text" id="search-author" placeholder="Author..." />
+                    <input type="date" id="search-start" />
+                    <input type="date" id="search-end" />
+                    <button id="search-btn" class="btn-primary">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg>
+                        Search
+                    </button>
+                </div>
+
+                <div id="search-info" class="results-meta"></div>
+                <div id="posts-list"></div>
+                <div id="pagination"></div>
+            </section>
+
+            <!-- Trend Dashboard -->
+            <section id="trends" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Trend Dashboard</h2>
+                        <p class="page-desc">Monitor post volume, keyword frequency, and emerging terms</p>
+                    </div>
+                    <div class="header-controls">
+                        <select id="trend-platform">
+                            <option value="">All Platforms</option>
+                            <option value="4chan">4chan</option>
+                            <option value="mastodon">Mastodon</option>
+                            <option value="truthsocial">Truth Social</option>
+                        </select>
+                        <button id="trend-refresh" class="btn-secondary">↻ Refresh</button>
+                    </div>
+                </div>
+
+                <!-- Velocity Alerts Panel -->
+                <div id="velocity-alerts-panel" class="alerts-panel">
+                    <div class="alerts-panel-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m12 14 4-4 4 4"/><path d="M4 20V10l4 4"/><path d="M16 10V4h6v6z"/><path d="M12 22V14"/>
+                        </svg>
+                        <span>Active Velocity Alerts</span>
+                    </div>
+                    <div id="alerts-container" class="alerts-grid">
+                        <div class="alerts-loading">Analyzing keyword velocity...</div>
+                    </div>
+                </div>
+
+                <div class="card card-full">
+                    <div class="card-header">
+                        <h3>Keyword Tracker</h3>
+                        <div class="keyword-track">
+                            <input type="text" id="track-keyword" placeholder="Enter keyword to track..." />
+                            <button id="track-btn" class="btn-secondary">Track</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="keyword-freq-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Narrative Explorer -->
+            <section id="narratives" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Narrative Explorer</h2>
+                        <p class="page-desc">Analyze co-occurring terms and compare framing across platforms</p>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-group filter-search">
+                        <svg class="filter-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                        </svg>
+                        <input type="text" id="narrative-keyword" placeholder="Enter seed keyword..." />
+                    </div>
+                    <select id="narrative-platform">
+                        <option value="">All Platforms</option>
+                        <option value="4chan">4chan</option>
+                        <option value="mastodon">Mastodon</option>
+                        <option value="truthsocial">Truth Social</option>
+                    </select>
+                    <button id="narrative-btn" class="btn-primary">Analyze</button>
+                    <button id="compare-btn" class="btn-accent">Compare Platforms</button>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card card-wide">
+                        <div class="card-header">
+                            <h3>Co-occurring Terms</h3>
+                            <span class="card-badge" id="narrative-info">Enter a keyword above</span>
+                        </div>
+                        <div class="card-body" style="height:400px; position:relative;">
+                            <canvas id="cooccurrence-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="compare-container" class="dashboard-grid"
+                    style="display:none; grid-template-columns: repeat(3, 1fr);">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>4chan Framing</h3>
+                            <span class="card-badge badge-4chan">4chan</span>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="compare-chart-4chan"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Mastodon Framing</h3>
+                            <span class="card-badge badge-mastodon">Mastodon</span>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="compare-chart-ts"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Truth Social Framing</h3>
+                            <span class="card-badge badge-truthsocial">Truth Social</span>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="compare-chart-truthsocial"></canvas>
+                        </div>
+                    </div>
+                    <div id="compare-info" class="compare-summary"></div>
+                </div>
+
+                <!-- Narrative Difference Detection -->
+                <div class="card card-full" style="margin-top: 1.5rem;">
+                    <div class="card-header">
+                        <h3>Narrative Difference Detection</h3>
+                        <span class="card-badge">Analysis Terminal</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="section-hint" style="margin-bottom: 1rem; color: var(--text-secondary); font-size: var(--fs-base);">
+                            Compare how different platforms frame the same keyword using collected post data.
+                        </p>
+                        
+                        <div class="narrative-diff-controls" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                            <input type="text" id="diff-keyword" placeholder="Keyword to analyze..." style="flex: 1;" />
+                            <input type="date" id="diff-start" title="Start Date (Optional)" />
+                            <input type="date" id="diff-end" title="End Date (Optional)" />
+                            <button id="diff-analyze-btn" class="btn-primary">Analyze Narrative Differences</button>
+                        </div>
+
+                        <div id="narrative-difference-results">
+                            <div class="empty-state">
+                                <p>Enter a keyword and click "Analyze" to see narrative differences.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Origin Tracer -->
+            <section id="origin-tracer" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Narrative Origin Tracer</h2>
+                        <p class="page-desc">
+                            Trace where a narrative was born, who spread it first,
+                            and whether the amplification looks coordinated or organic.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card card-full">
+                    <div class="card-header">
+                        <h3>Trace a Keyword</h3>
+                        <span class="card-badge">Origin Analysis</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="filter-bar">
+                            <div class="filter-group filter-search">
+                                <input type="text" id="origin-keyword"
+                                    placeholder="e.g. russianwar, fluoride, vaccine…" />
+                            </div>
+                            <select id="origin-platform">
+                                <option value="">All Platforms</option>
+                                <option value="4chan">4chan</option>
+                                <option value="mastodon">Mastodon</option>
+                                <option value="truthsocial">Truth Social</option>
+                            </select>
+                            <button id="origin-trace-btn" class="btn-primary">Trace Origin</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="origin-results" style="margin-top: 1.5rem;"></div>
+            </section>
+
+            <!-- Ask the Data (QA) -->
+            <section id="qa" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Ask the Data</h2>
+                        <p class="page-desc">
+                            Ask any question. Answers are based strictly on collected
+                            posts only — no guessing, no outside knowledge, no prediction.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card card-full">
+                    <div class="card-header">
+                        <h3>Your Question</h3>
+                        <span class="card-badge">Evidence-Based Analysis</span>
+                    </div>
+                    <div class="card-body">
+
+                        <p class="section-hint" style="margin-bottom: 1.25rem;">
+                            The system will search all collected posts, find the most
+                            relevant evidence, and return a structured answer.
+                            If there is not enough data, it will tell you clearly.
+                        </p>
+
+                        <textarea id="qa-question"
+                            placeholder="e.g. Are people on Truth Social discussing election fraud?&#10;e.g. Is immigration being blamed for economic problems on 4chan?&#10;e.g. Are there posts claiming vaccine side effects on any platform?"
+                            rows="4"></textarea>
+
+                        <div class="qa-filters">
+                            <select id="qa-platform">
+                                <option value="">All Platforms</option>
+                                <option value="4chan">4chan</option>
+                                <option value="mastodon">Mastodon</option>
+                                <option value="truthsocial">Truth Social</option>
+                            </select>
+                            <input type="date" id="qa-start" title="From date (optional)" />
+                            <input type="date" id="qa-end" title="To date (optional)" />
+                            <button id="qa-submit" class="btn-primary">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <path d="m21 21-4.3-4.3"/>
+                                </svg>
+                                Find Answer
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="qa-results" style="margin-top: 1.5rem;"></div>
+
+            </section>
+
+            <!-- Data Export -->
+            <section id="export" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Export Data</h2>
+                        <p class="page-desc">Download research-grade discourse datasets</p>
+                    </div>
+                </div>
+
+                <div class="card card-full">
+                    <div class="card-header">
+                        <h3>Export Parameters</h3>
+                        <span class="card-badge">Data Terminal</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="export-grid">
+                            <div class="export-field">
+                                <label>Platform</label>
+                                <select id="export-platform">
+                                    <option value="all">All Platforms</option>
+                                    <option value="4chan">4chan</option>
+                                    <option value="mastodon">Mastodon</option>
+                                    <option value="truthsocial">Truth Social</option>
+                                </select>
+                            </div>
+                            <div class="export-field">
+                                <label>Date Range</label>
+                                <select id="export-range">
+                                    <option value="today">Today</option>
+                                    <option value="7days">Last 7 Days</option>
+                                    <option value="30days">Last 30 Days</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            <div class="export-field" id="custom-date-start" style="display: none;">
+                                <label>Start Date</label>
+                                <input type="date" id="export-start" />
+                            </div>
+                            <div class="export-field" id="custom-date-end" style="display: none;">
+                                <label>End Date</label>
+                                <input type="date" id="export-end" />
+                            </div>
+                            <div class="export-field">
+                                <label>File Format</label>
+                                <select id="export-format">
+                                    <option value="csv">CSV (Excel Compatible)</option>
+                                    <option value="json">JSON (Developer Ready)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="export-error" class="export-status error" style="display: none;"></div>
+                        <div id="export-loading" class="export-status loading" style="display: none;">
+                            <div class="spinner"></div>
+                            Preparing dataset...
+                        </div>
+
+                        <div class="export-footer">
+                            <button id="download-btn" class="btn-primary">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Download Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="/static/app.js?v=2.3"></script>
+</body>
+
+</html>

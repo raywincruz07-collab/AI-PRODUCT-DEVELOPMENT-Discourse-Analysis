@@ -26,7 +26,7 @@ The system operates across a modular, multi-tier asynchronous architecture:
 
 ## Core System Modules
 
-- **Post Explorer**: Allows researchers to search and filter through hundreds of thousands of aggregated public posts by platform, keyword, author, and time windows.
+- **Post Explorer**: Allows researchers to search and filter aggregated public posts by platform, keyword, author, and time window.
 - **Trends Dashboard**: Identifies trending keywords and alerts researchers to high-velocity narrative spikes using time-series baseline analytics.
 - **Narrative Explorer**: Details keyword association networks using co-occurrence matrices, showcasing how distinct concepts cluster together on different platforms.
 - **Origin Tracer**: Traces the path of a narrative across alternative media platforms. Analyzes publication timestamps to outline which platform hosted the early mentions of a narrative and how it spread.

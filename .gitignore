@@ -43,3 +43,7 @@ Thumbs.db
 # Tool-specific local files
 .claude/
 CLAUDE.md
+
+# Local cleanup backup
+_backup_original/
+

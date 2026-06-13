@@ -10,10 +10,12 @@ Developed to support journalists, political scientists, and information integrit
 
 The system operates across a modular, multi-tier asynchronous architecture:
 
-```
-[Collectors Layer]  ──>  [Database Layer]  ──>  [Analysis Engines]  ──>  [FastAPI Backend]  ──>  [Frontend Web UI]
-   (4chan, Masto,           (SQLite / PostgreSQL)     (Keywords, Trends,       (JSON REST API +       (Vanilla JS Dashboard)
-    Truth Social)                                     Narratives, QA)          Static Mounting)
+```mermaid
+flowchart LR
+    A[Collectors<br>4chan, Mastodon] --> B[(Database<br>SQLite/PostgreSQL)]
+    B --> C[Analysis Engines<br>Trends, QA]
+    C --> D[FastAPI Backend<br>JSON REST]
+    D --> E[Frontend Web UI<br>Vanilla JS]
 ```
 
 1. **Collectors**: Background worker threads running on a rate-limited scheduler ingest public feeds.
@@ -23,6 +25,19 @@ The system operates across a modular, multi-tier asynchronous architecture:
 5. **Frontend Dashboard**: A responsive, rich HTML/JS client displaying plots, graphs, and export panels.
 
 ---
+
+## Implementation Status
+
+| Component | Status |
+|---|---|
+| Database layer | Locally validated |
+| Analysis modules | Locally validated |
+| FastAPI backend | Locally validated |
+| Collectors | Present in codebase; external integration validation pending |
+| Frontend dashboard | Present in codebase; manual UI validation pending |
+| AI-powered Q&A | Present in codebase; requires API credentials; end-to-end validation pending |
+| Tests | 31 tests passed locally |
+| Live deployment | Not deployed |
 
 ## Core System Modules
 

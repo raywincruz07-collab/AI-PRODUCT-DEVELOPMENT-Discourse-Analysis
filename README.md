@@ -117,3 +117,8 @@ Information integrity research demands the highest ethical standards:
 ### Future Enhancements
 - **Dynamic Network Graphs**: Transitioning static networks to real-time interactive D3.js topologies.
 - **Vector Space Embeddings**: Introducing transformer-based semantic embeddings to cluster conceptually identical posts regardless of specific keyword variations.
+
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

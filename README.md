@@ -10,10 +10,12 @@ Developed to support journalists, political scientists, and information integrit
 
 The system operates across a modular, multi-tier asynchronous architecture:
 
-```
-[Collectors Layer]  ──>  [Database Layer]  ──>  [Analysis Engines]  ──>  [FastAPI Backend]  ──>  [Frontend Web UI]
-   (4chan, Masto,           (SQLite / PostgreSQL)     (Keywords, Trends,       (JSON REST API +       (Vanilla JS Dashboard)
-    Truth Social)                                     Narratives, QA)          Static Mounting)
+```mermaid
+flowchart LR
+    A[Collectors<br>4chan, Mastodon] --> B[(Database<br>SQLite/PostgreSQL)]
+    B --> C[Analysis Engines<br>Trends, QA]
+    C --> D[FastAPI Backend<br>JSON REST]
+    D --> E[Frontend Web UI<br>Vanilla JS]
 ```
 
 1. **Collectors**: Background worker threads running on a rate-limited scheduler ingest public feeds.
@@ -23,6 +25,19 @@ The system operates across a modular, multi-tier asynchronous architecture:
 5. **Frontend Dashboard**: A responsive, rich HTML/JS client displaying plots, graphs, and export panels.
 
 ---
+
+## Implementation Status
+
+| Component | Status | Evidence |
+|---|---|---|
+| Collectors (4chan, Mastodon, Truth Social) | Implemented | Dependent on external platforms and credentials |
+| Database layer (SQLite/PostgreSQL) | Implemented | Locally validated (31 passing tests) |
+| Analysis modules | Implemented | Locally validated (31 passing tests) |
+| FastAPI backend | Implemented | Locally validated (Root endpoint returned HTTP 200) |
+| Frontend dashboard | Implemented | Depends on local API startup |
+| AI-powered Q&A (LLM) | Implemented (requires API key) | Locally validated (31 passing tests) |
+| Tests | Implemented | 5 test files, 31 passing tests |
+| Live deployment | Not deployed | No public deployment exists |
 
 ## Core System Modules
 

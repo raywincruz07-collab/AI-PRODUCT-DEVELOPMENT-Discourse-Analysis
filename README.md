@@ -28,16 +28,16 @@ flowchart LR
 
 ## Implementation Status
 
-| Component | Status | Evidence |
-|---|---|---|
-| Collectors (4chan, Mastodon, Truth Social) | Implemented | Dependent on external platforms and credentials |
-| Database layer (SQLite/PostgreSQL) | Implemented | Locally validated (31 passing tests) |
-| Analysis modules | Implemented | Locally validated (31 passing tests) |
-| FastAPI backend | Implemented | Locally validated (Root endpoint returned HTTP 200) |
-| Frontend dashboard | Implemented | Depends on local API startup |
-| AI-powered Q&A (LLM) | Implemented (requires API key) | Locally validated (31 passing tests) |
-| Tests | Implemented | 5 test files, 31 passing tests |
-| Live deployment | Not deployed | No public deployment exists |
+| Component | Status |
+|---|---|
+| Database layer | Locally validated |
+| Analysis modules | Locally validated |
+| FastAPI backend | Locally validated |
+| Collectors | Present in codebase; external integration validation pending |
+| Frontend dashboard | Present in codebase; manual UI validation pending |
+| AI-powered Q&A | Present in codebase; requires API credentials; end-to-end validation pending |
+| Tests | 31 tests passed locally |
+| Live deployment | Not deployed |
 
 ## Core System Modules
 
